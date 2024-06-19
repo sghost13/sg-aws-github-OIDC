@@ -14,17 +14,17 @@ export class GithubActionsRoleStack extends cdk.Stack {
 
     // Create the role
     const role = new Role(this, 'GithubActionsRole', {
-      // The trusted entity that will assume this role
       assumedBy: new FederatedPrincipal(
           oidcProvider.openIdConnectProviderArn,
           {
             StringEquals: {
-              'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
-              'token.actions.githubusercontent.com:sub': [
-                'repo:sghost13/sg-aws-github-oidc:ref:refs/heads/main',
-//                'repo:<your-github-username>/<your-repo-name>:ref:refs/heads/<your-branch-name>',
-              ]
+              'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com'
             },
+            StringLike: {
+              'token.actions.githubusercontent.com:sub': [
+                'repo:sghost13/sg-aws-github-oidc:ref:refs/heads/main'
+              ]
+            }
           },
           'sts:AssumeRoleWithWebIdentity'
       ),
