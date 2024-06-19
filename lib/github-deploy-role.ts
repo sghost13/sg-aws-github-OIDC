@@ -30,7 +30,7 @@ export class GithubActionsRoleStack extends cdk.Stack {
       ),
 
       // Description for the role
-      description: 'Role for GitHub Actions to deploy using CDK',
+      description: 'Role for Github Actions to deploy using CDK',
 
       // Custom name for the role
       roleName: 'GithubActionsRole',
@@ -40,7 +40,7 @@ export class GithubActionsRoleStack extends cdk.Stack {
 
       // Inline policies attached to the role
       inlinePolicies: {
-        GitHubActionsPolicy: new PolicyDocument({
+        GithubActionsPolicy: new PolicyDocument({
           statements: [
             new PolicyStatement({
               actions: [
