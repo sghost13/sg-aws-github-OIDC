@@ -18,13 +18,16 @@ export class GithubActionsRoleStack extends cdk.Stack {
           oidcProvider.openIdConnectProviderArn,
           {
             StringEquals: {
-              'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com'
-            },
-            StringLike: {
+              'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
               'token.actions.githubusercontent.com:sub': [
                 'repo:sghost13/sg-aws-github-oidc:ref:refs/heads/main'
               ]
-            }
+            },
+            // StringLike: {
+            //   'token.actions.githubusercontent.com:sub': [
+            //     'repo:sghost13/*:ref:refs/heads/main'
+            //   ]
+            // }
           },
           'sts:AssumeRoleWithWebIdentity'
       ),
