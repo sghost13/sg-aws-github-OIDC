@@ -38,7 +38,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions/GitHubActionsRole
           aws-region: ${{ secrets.AWS_REGION }}
-          role-session-name: GitHubActionsRole
+          role-session-name: GitHubActions-oidc-setup
 
       - name: Deploy CDK
         run: |
