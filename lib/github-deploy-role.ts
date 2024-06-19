@@ -36,66 +36,66 @@ export class GithubActionsRoleStack extends cdk.Stack {
       description: 'Role for Github Actions to deploy using CDK',
 
       // Custom name for the role
-      roleName: 'GithubActionsRole',
+      roleName: 'githubActionsRole',
 
       // Maximum duration for the role session
       maxSessionDuration: cdk.Duration.hours(1),
 
       // Inline policies attached to the role
-      inlinePolicies: {
-        GithubActionsPolicy: new PolicyDocument({
-          statements: [
-            new PolicyStatement({
-              actions: [
-                'cloudformation:CreateStack',
-                'cloudformation:DeleteStack',
-                'cloudformation:DescribeStacks',
-                'cloudformation:UpdateStack',
-                'cloudformation:DescribeStackResources',
-                'cloudformation:DescribeStackEvents',
-                'cloudformation:GetTemplate',
-                'cloudformation:ValidateTemplate',
-                's3:ListBucket',
-                's3:GetObject',
-                's3:PutObject',
-                'iam:PassRole',
-                'ssm:GetParameter',
-                'ssm:GetParameters',
-                'ssm:DescribeParameters'
-              ],
-              resources: ['*'],
-              effect: Effect.ALLOW,
-              sid: 'AllowCDKDeployments'
-            }),
-            new PolicyStatement({
-              actions: [
-                'ec2:Describe*',
-                'ec2:CreateTags',
-                'ec2:DeleteTags'
-              ],
-              resources: ['*'],
-              effect: Effect.ALLOW,
-              sid: 'AllowEC2Operations'
-            }),
-            new PolicyStatement({
-              actions: [
-                'lambda:CreateFunction',
-                'lambda:DeleteFunction',
-                'lambda:InvokeFunction',
-                'lambda:UpdateFunctionCode',
-                'lambda:UpdateFunctionConfiguration'
-              ],
-              resources: ['*'],
-              effect: Effect.ALLOW,
-              sid: 'AllowLambdaOperations'
-            })
-          ]
-        })
-      }
+      // inlinePolicies: {
+      //   GithubActionsPolicy: new PolicyDocument({
+      //     statements: [
+      //       new PolicyStatement({
+      //         actions: [
+      //           'cloudformation:CreateStack',
+      //           'cloudformation:DeleteStack',
+      //           'cloudformation:DescribeStacks',
+      //           'cloudformation:UpdateStack',
+      //           'cloudformation:DescribeStackResources',
+      //           'cloudformation:DescribeStackEvents',
+      //           'cloudformation:GetTemplate',
+      //           'cloudformation:ValidateTemplate',
+      //           's3:ListBucket',
+      //           's3:GetObject',
+      //           's3:PutObject',
+      //           'iam:PassRole',
+      //           'ssm:GetParameter',
+      //           'ssm:GetParameters',
+      //           'ssm:DescribeParameters'
+      //         ],
+      //         resources: ['*'],
+      //         effect: Effect.ALLOW,
+      //         sid: 'AllowCDKDeployments'
+      //       }),
+      //       new PolicyStatement({
+      //         actions: [
+      //           'ec2:Describe*',
+      //           'ec2:CreateTags',
+      //           'ec2:DeleteTags'
+      //         ],
+      //         resources: ['*'],
+      //         effect: Effect.ALLOW,
+      //         sid: 'AllowEC2Operations'
+      //       }),
+      //       new PolicyStatement({
+      //         actions: [
+      //           'lambda:CreateFunction',
+      //           'lambda:DeleteFunction',
+      //           'lambda:InvokeFunction',
+      //           'lambda:UpdateFunctionCode',
+      //           'lambda:UpdateFunctionConfiguration'
+      //         ],
+      //         resources: ['*'],
+      //         effect: Effect.ALLOW,
+      //         sid: 'AllowLambdaOperations'
+      //       })
+      //     ]
+      //   })
+      // }
     });
 
     // // Additional managed policies (optional)
-    // role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
+    role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
 
     // Add tags to the role
     cdk.Tags.of(role).add('Environment', 'CI/CD');
