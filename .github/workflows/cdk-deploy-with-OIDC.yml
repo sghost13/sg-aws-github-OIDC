@@ -1,0 +1,45 @@
+name: Manually Deploy a CDK stack with OIDC
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Cache Node.js dependencies
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('./package-lock.json') }}
+
+      - name: Install CDK Dependencies
+        working-directory: ./
+        run: npm ci
+        if: steps.cache.outputs.cache-hit != 'true'
+
+      - name: Configure AWS Creds
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:oidc-provider/token.actions.githubusercontent.com
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-session-name: GitHubActionsRole
+
+      - name: Deploy CDK
+        run: |
+          npx cdk deploy --require-approval never

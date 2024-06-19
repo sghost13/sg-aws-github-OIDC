@@ -3,7 +3,7 @@
 // import * as SgAwsGithubOidc from '../lib/sg-aws-github-oidc-stack';
 
 // example test. To run these tests, uncomment this file along with the
-// example resource in lib/sg-aws-github-oidc-stack.ts
+// example resource in lib/github-deploy-role.ts
 test('SQS Queue Created', () => {
 //   const app = new cdk.App();
 //     // WHEN
