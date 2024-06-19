@@ -7,13 +7,13 @@ export class GithubActionsRoleStack extends cdk.Stack {
     super(scope, id, props);
 
     // Create the OIDC provider for GitHub
-    const oidcProvider = new cdk.aws_iam.OpenIdConnectProvider(this, 'GitHubOIDCProvider', {
+    const oidcProvider = new cdk.aws_iam.OpenIdConnectProvider(this, 'GithubOIDCProvider', {
       url: 'https://token.actions.githubusercontent.com',
       clientIds: ['sts.amazonaws.com']
     });
 
     // Create the role
-    const role = new Role(this, 'GitHubActionsRole', {
+    const role = new Role(this, 'GithubActionsRole', {
       // The trusted entity that will assume this role
       assumedBy: new FederatedPrincipal(
           oidcProvider.openIdConnectProviderArn,
@@ -33,13 +33,10 @@ export class GithubActionsRoleStack extends cdk.Stack {
       description: 'Role for GitHub Actions to deploy using CDK',
 
       // Custom name for the role
-      roleName: 'GitHubActionsRole',
+      roleName: 'GithubActionsRole',
 
       // Maximum duration for the role session
       maxSessionDuration: cdk.Duration.hours(1),
-
-      // Path for organizing roles (optional)
-      path: '/github-actions/',
 
       // Inline policies attached to the role
       inlinePolicies: {
@@ -99,7 +96,7 @@ export class GithubActionsRoleStack extends cdk.Stack {
 
     // Add tags to the role
     cdk.Tags.of(role).add('Environment', 'CI/CD');
-    cdk.Tags.of(role).add('Owner', 'GitHubActions');
+    cdk.Tags.of(role).add('Owner', 'GithubActions');
   }
 }
 
