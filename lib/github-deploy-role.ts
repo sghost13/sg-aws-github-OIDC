@@ -63,7 +63,8 @@ export class GithubActionsRoleStack extends cdk.Stack {
                 'iam:PassRole',
                 'ssm:GetParameter',
                 'ssm:GetParameters',
-                'ssm:DescribeParameters'
+                'ssm:DescribeParameters',
+                'sts:AssumeRoleWithWebIdentity'
               ],
               resources: ['*'],
               effect: Effect.ALLOW,
