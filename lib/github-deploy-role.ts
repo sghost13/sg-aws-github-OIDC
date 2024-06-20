@@ -19,7 +19,7 @@ export class GithubActionsRoleStack extends cdk.Stack {
           'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
           'token.actions.githubusercontent.com:sub': [
 //              'repo:sghost13/sg-aws-github-oidc:ref:refs/heads/main'
-            'repo:sghost13/sg-aws-github-oidc:*/main'
+            'repo:sghost13/sg-aws-github-oidc:*main'
           ]
         },
       },
