@@ -5,41 +5,29 @@ import { Construct } from 'constructs';
 export class GithubActionsRoleStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-
     // Create the OIDC provider for GitHub
     const oidcProvider = new cdk.aws_iam.OpenIdConnectProvider(this, 'GithubOIDCProvider', {
       url: 'https://token.actions.githubusercontent.com',
       clientIds: ['sts.amazonaws.com']
     });
-
     // Create the role
     const role = new Role(this, 'GithubActionsRole', {
-      assumedBy: new FederatedPrincipal(
-          oidcProvider.openIdConnectProviderArn,
-          {
-            StringEquals: {
-              'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
-              'token.actions.githubusercontent.com:sub': [
-                'repo:sghost13/sg-aws-github-oidc:ref:refs/heads/main'
-              ]
-            },
-            // StringLike: {
-            //   'token.actions.githubusercontent.com:sub': [
-            //     'repo:sghost13/*:ref:refs/heads/main'
-            //   ]
-            // }
-          },
-          'sts:AssumeRoleWithWebIdentity'
-      ),
-
-      // Description for the role
-      description: 'Role for Github Actions to deploy using CDK',
-
-      // Custom name for the role
-      roleName: 'githubActionsRole',
-
-      // Maximum duration for the role session
-      maxSessionDuration: cdk.Duration.hours(1),
+      assumedBy: new FederatedPrincipal(oidcProvider.openIdConnectProviderArn, {
+        StringEquals: {
+          'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
+          'token.actions.githubusercontent.com:sub': 'repo:sghost13/sg-aws-github-oidc:ref:refs/heads/main'
+        },
+        // StringLike: {
+        //   'token.actions.githubusercontent.com:sub': [
+        //     'repo:sghost13/*:ref:refs/heads/main'
+        //   ]
+        // }
+      },
+      'sts:AssumeRoleWithWebIdentity'
+    ),
+      description: 'Role for Github Actions to deploy using CDK', // Description for the role
+      roleName: 'githubActionsRole', // Custom name for the role
+      maxSessionDuration: cdk.Duration.hours(1), // Maximum duration for the role session
 
       // Inline policies attached to the role
       // inlinePolicies: {
@@ -93,13 +81,8 @@ export class GithubActionsRoleStack extends cdk.Stack {
       //   })
       // }
     });
-
-    // // Additional managed policies (optional)
+    // Additional managed policies (optional)
     role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
-
-    // Add tags to the role
-    cdk.Tags.of(role).add('Environment', 'CI/CD');
-    cdk.Tags.of(role).add('Owner', 'GithubActions');
   }
 }
 
