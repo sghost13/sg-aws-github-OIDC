@@ -8,7 +8,7 @@ export class GithubActionsRoleStack extends cdk.Stack {
     // Create the OIDC provider for GitHub
     const oidcProvider = new cdk.aws_iam.OpenIdConnectProvider(this, 'GithubOIDCProvider', {
       url: 'https://token.actions.githubusercontent.com',
-      clientIds: ['sts.amazonaws.com']
+      clientIds: ['https://sts.amazonaws.com']
     });
     // Create the role
     const role = new Role(this, 'GithubActionsRole', {
