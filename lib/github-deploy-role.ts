@@ -15,7 +15,7 @@ export class GithubActionsRoleStack extends cdk.Stack {
     // Create the role
     const role = new Role(this, 'GithubActionsRole', {
       assumedBy: new FederatedPrincipal(oidcProvider.openIdConnectProviderArn, {
-        StringEquals: {
+        StringLike: {
           'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
           'token.actions.githubusercontent.com:sub': [
 //            'repo:<USER>/<REPO>:*<BRANCH>'
