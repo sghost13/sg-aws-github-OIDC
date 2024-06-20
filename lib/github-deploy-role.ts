@@ -15,7 +15,7 @@ export class GithubActionsRoleStack extends cdk.Stack {
       assumedBy: new FederatedPrincipal(oidcProvider.openIdConnectProviderArn, {
         StringEquals: {
           'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
-          'token.actions.githubusercontent.com:sub': 'repo:sghost13/sg-aws-github-oidc:ref:refs/heads/main'
+          'token.actions.githubusercontent.com:sub': 'repo:sghost13/*:*'
         },
         // StringLike: {
         //   'token.actions.githubusercontent.com:sub': [
@@ -26,8 +26,8 @@ export class GithubActionsRoleStack extends cdk.Stack {
       'sts:AssumeRoleWithWebIdentity'
     ),
       description: 'Role for Github Actions to deploy using CDK', // Description for the role
-      roleName: 'githubActionsRole', // Custom name for the role
-      maxSessionDuration: cdk.Duration.hours(1), // Maximum duration for the role session
+      roleName: 'GitHubActions', // Custom name for the role
+      // maxSessionDuration: cdk.Duration.hours(1), // Maximum duration for the role session
 
       // Inline policies attached to the role
       // inlinePolicies: {
