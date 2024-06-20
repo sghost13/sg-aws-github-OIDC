@@ -27,7 +27,7 @@ export class GithubActionsRoleStack extends cdk.Stack {
     });
 
     // Additional managed policies (optional)
-//    role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
+    role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
   }
 }
 
