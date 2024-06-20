@@ -17,8 +17,6 @@ export class GithubActionsRoleStack extends cdk.Stack {
       assumedBy: new FederatedPrincipal(oidcProvider.openIdConnectProviderArn, {
         StringEquals: {
           'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
-        },
-        StringLike: {
           'token.actions.githubusercontent.com:sub': [
 //            'repo:<USER>/<REPO>:*<BRANCH>'
             'repo:sghost13/sg-aws-github-oidc:*main'
